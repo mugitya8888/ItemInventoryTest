@@ -7,6 +7,7 @@ namespace TestUI
     public static class EventFlag
     {
         private static bool hasKey;
+        private static bool hasHandgun;
 
         public static void SetHasKey(bool flag)
         {
@@ -16,6 +17,16 @@ namespace TestUI
         public static bool GetHasKey()
         {
             return hasKey;
+        }
+
+        public static void SetHasHandgun(bool flag)
+        {
+            hasHandgun = flag;
+        }
+
+        public static bool GetHasHandgun()
+        {
+            return hasHandgun;
         }
     }
 }

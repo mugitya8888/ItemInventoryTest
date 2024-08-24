@@ -1,4 +1,5 @@
 using System;
+using TestUI;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -29,12 +30,14 @@ namespace StarterAssets
 
         public GameObject bulletSpawnPoint;
         public GameObject bulletPrefab;
+        private PlayerInventory playerInventory;
 
         private void Start()
         {
             if (menuWindow == null)
                 return;
             menuWindow.SetActive(false);
+            playerInventory = GetComponent<PlayerInventory>();
         }
 
 
@@ -82,8 +85,22 @@ namespace StarterAssets
 
         public void OnFire()
         {
-            Debug.Log("fire");
-            Instantiate(bulletPrefab, bulletSpawnPoint.transform);
+            if (EventFlag.GetHasHandgun()) {
+
+                int amount = playerInventory.GetCurrentItemAmount(2);
+                if (amount > 0) {
+                    Instantiate(bulletPrefab, bulletSpawnPoint.transform);
+                    playerInventory.DecleaseBulletsAmount();
+                }
+                else if (amount == -100) {
+                    Debug.Log("不正なインデックス");
+                }
+                else {
+                    Debug.Log("弾がありません");
+                }
+
+            }
+
         }
 
 

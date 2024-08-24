@@ -17,7 +17,6 @@ namespace TestUI
         //UI関連
         public GameObject pickUpComment;
         public GameObject inventoryNotEmptyComent;
-
         public GameObject inventoryCanvas;
         public GameObject inventoryParent;
         public GameObject equipmentParent;
@@ -203,10 +202,9 @@ namespace TestUI
         {
             //ボタンが押されたスロットのイメージを所得
             Image slotIconImage = slotObj.GetComponent<Image>();
-            Sprite icon = slotIconImage.sprite;
 
             //必要な情報をinventoryItemから取得
-            Items items = GetItemData(icon);
+            Items items = CheckSlotItems(slotObj);
 
             if (items != null) {
 
@@ -261,8 +259,6 @@ namespace TestUI
 
                 case "KEY":
                 EventFlag.SetHasKey(true);
-                //SetHasKey(true);
-                //ShowFlag();
                 Debug.Log("open the door");
                 break;
 
@@ -291,13 +287,10 @@ namespace TestUI
                 }
             }
             return item;
-
         }
 
         public void ItemDelete(GameObject slotObj)
         {
-
-
             for (int i = 0; i < canvasInventory.slotList.Count; i++) {
 
                 if (canvasInventory.slotList[i] == slotObj) {
@@ -344,5 +337,109 @@ namespace TestUI
                 _playerInput.SwitchCurrentActionMap(mapPlayer);
             }
         }
+
+
+
+        public void SetWeapon(GameObject slotObj)
+        {
+            Items item = CheckSlotItems(slotObj);
+
+            if (item != null && item.itemType.ToString() == "WEAPON") {
+
+                GameObject weaponSlot = CheckEmptyWeaponSlotList();
+
+                if (weaponSlot == null) {
+                    Debug.Log("Weapon Slot is Full");
+                    return;
+                }
+                weaponSlot.GetComponent<Image>().sprite = item.itemIcon;
+                EventFlag.SetHasHandgun(true);
+            }
+            else {
+                Debug.Log("no weapon. can't soubi");
+            }
+
+        }
+
+        private GameObject CheckEmptyWeaponSlotList()
+        {
+            GameObject weaponSlot = null;
+
+            for (int i = 0; i < canvasInventory.weaponSlotList.Count; i++) {
+
+                Image icon = canvasInventory.weaponSlotList[i].GetComponent<Image>();
+
+                if (icon.sprite == null) {
+                    Debug.Log(canvasInventory.weaponSlotList[i]);
+                    Debug.Log("i : " + i);
+                    weaponSlot = canvasInventory.weaponSlotList[i];
+                    break;
+                }
+            }
+            return weaponSlot;
+        }
+
+        private Items CheckSlotItems(GameObject slotObj)
+        {
+            Items items = null;
+
+            for (int i = 0; i < canvasInventory.slotList.Count; i++) {
+
+                if (canvasInventory.slotList[i] == slotObj) {
+                    items = inventoryItems[i];
+                }
+            }
+            return items;
+        }
+
+        public int GetCurrentItemAmount(int index)
+        {
+            if (currentItemAmount.Length > index && index >= 0) {
+
+                return currentItemAmount[index];
+            }
+            return -100;
+        }
+
+        public void DecleaseBulletsAmount()
+        {
+
+            currentItemAmount[2] -= 1;
+
+            for (int i = 0; i < inventoryItems.Length; i++) {
+
+                Items item = inventoryItems[i];
+
+                if (item != null) {
+
+                    int ID = item.itemID;
+
+                    if (ID == 2) {
+
+                        GameObject count = canvasInventory.slotList[i].transform.GetChild(1).GetChild(0).gameObject;
+                        TextMeshProUGUI textMesh = count.GetComponent<TextMeshProUGUI>();
+                        int num = int.Parse(textMesh.text);
+
+                        if (currentItemAmount[ID] > 0) {                            
+                            num--;
+                            textMesh.text = num.ToString();
+
+                        }
+                        else if (currentItemAmount[ID] == 0) {
+                            num = 0;
+                            textMesh.text = num.ToString();
+                        }
+
+                    }
+
+                }
+
+
+            }
+
+
+        }
+
+
     }
 }
