@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace TestUI
 {
@@ -16,10 +17,12 @@ namespace TestUI
         //UI関連
         public GameObject pickUpComment;
         public GameObject inventoryNotEmptyComent;
+
         public GameObject inventoryCanvas;
         public GameObject inventoryParent;
-        protected GameObject inventory;
+        public GameObject equipmentParent;
         public CanvasInventory canvasInventory;
+
 
 
         //PlayerInput関連
@@ -330,12 +333,14 @@ namespace TestUI
             //現在のmapが「Player」ならUIに変更
             if (currnetMap == mapPlayer) {
                 inventoryParent.SetActive(true);
+                equipmentParent.SetActive(true);
                 _playerInput.SwitchCurrentActionMap(mapUI);
             }
 
             //現在のmapが「UI」ならPlayerに変更
             else if (currnetMap == mapUI) {
                 inventoryParent.SetActive(false);
+                equipmentParent.SetActive(false);
                 _playerInput.SwitchCurrentActionMap(mapPlayer);
             }
         }
