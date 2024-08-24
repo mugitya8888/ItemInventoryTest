@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0ceca6f5ee09a34cb1b1383f2cc3ee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemsObj: {fileID: 11400000, guid: 33d609d7cead8bd46a963bcbf7476221, type: 2}
   tagName: 1
 --- !u!65 &6737494100090510877
 BoxCollider:
@@ -137,7 +138,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

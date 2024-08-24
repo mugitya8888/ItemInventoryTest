@@ -8,8 +8,8 @@ namespace TestUI
     public class CanvasInventory:MonoBehaviour
     {
         private Transform inventoryParent;
-        public static List<GameObject> slotFrameList = new List<GameObject>();
-        public static List<GameObject> slotList = new List<GameObject>();        
+        public List<GameObject> slotFrameList = new List<GameObject>();
+        public List<GameObject> slotList = new List<GameObject>();        
 
         // Start is called before the first frame update
          void Start()

@@ -6,6 +6,9 @@ namespace TestUI
 {
     public class ItemInfo:MonoBehaviour
     {
+        public Items itemsObj;
+
+
         public enum ItemTagName
         {
             Medicine,

@@ -16,61 +16,54 @@ namespace TestUI
         //UI関連
         public GameObject pickUpComment;
         public GameObject inventoryNotEmptyComent;
-        public GameObject itemDatabase;
         public GameObject inventoryCanvas;
         public GameObject inventoryParent;
-        private GameObject inventory;
-        private CanvasInventory canvasInventory;
+        protected GameObject inventory;
+        public CanvasInventory canvasInventory;
 
 
         //PlayerInput関連
-        public PlayerInput _playerInput;
+        [SerializeField]
+        private PlayerInput _playerInput;
         private string mapPlayer = "Player";
         private string mapUI = "UI";
 
 
         //インベントリ関連
-        private int maxIndex = 6;
-        public GameObject[] inventoryArray = new GameObject[6];
-        public ItemInfo[] itemArray = new ItemInfo[6];
+        private int maxIndex = 6;      
         public static int[] currentItemAmount = new int[4];
+        public static Items[] inventoryItems = new Items[6];
 
         //Flag
         private bool isInventoryFull;
         private bool hasSameItem = false;
 
         //仮保存用の取得変数
-        private GameObject checkItem;
-        private Sprite checkItemIcon;
-        private string checkItemTagName;
-        private int checkItemID;
-        private int checkStackNum;
-        TextMeshProUGUI stackText = null;
+        
+        protected TextMeshProUGUI stackText = null;
 
         private void Start()
         {
             for (int i = 0; i < maxIndex; i++) {
-                inventoryArray[i] = null;
+                inventoryItems[i] = null;
             }
         }
 
 
         private void OnTriggerStay(Collider other)
         {
-            if (other.gameObject.CompareTag("Item")) {
+            bool isItem = other.gameObject.CompareTag("Item");
+
+            if (isItem) {
 
                 pickUpComment.SetActive(true);
 
                 if (Input.GetButtonDown("PickUp")) {
 
-
-                    //Databaseから情報を引き出すための鍵として、tagNameを取得                    
-                    checkItemTagName = other.gameObject.GetComponent<ItemInfo>().GetTagName();
-                    //Databaseから必要な情報を取得
-                    GetItemData();
+                    ItemInfo itemInfo = other.gameObject.GetComponent<ItemInfo>();
 
                     //同じアイテムをすでにインベントリに持っているかチェック
-                    hasSameItem = HasSameItem();
+                    hasSameItem = HasSameItem(itemInfo.itemsObj);
                     Debug.Log("hasSameItem" + hasSameItem);
 
 
@@ -78,7 +71,7 @@ namespace TestUI
                     if (hasSameItem == true) {
                         //そのアイテムが入っているスロットの中にアイテムを入れる
                         //->現在のスタック数から取得数を加算して、インベントリに表示
-                        StackItem();
+                        StackItem(itemInfo.itemsObj);
                         Destroy(other.gameObject);
                         pickUpComment.SetActive(false);
                         inventoryNotEmptyComent.SetActive(false);
@@ -100,7 +93,7 @@ namespace TestUI
                         //InventoryListにアイテムを追加、itemAmountArrayにアイテム所持数を追加。配列の順番はアイテムIDに準拠。
                         else if (isInventoryFull == false) {
 
-                            CheckInventorySlot();
+                            CheckInventorySlot(itemInfo.itemsObj);
                             Destroy(other.gameObject);
                             pickUpComment.SetActive(false);
                             inventoryNotEmptyComent.SetActive(false);
@@ -108,9 +101,7 @@ namespace TestUI
                         }
 
                     }
-                    //グローバル変数の初期化
-                    //Debug.Log("initializeValue");
-                    InitializeValue();
+                    
                 }
             }
 
@@ -122,13 +113,24 @@ namespace TestUI
 
         }
 
-        //同じアイテムをすでにインベントリに持っているかチェックするメソッド
-        private bool HasSameItem()
+        private Items HasInventoryItems()
         {
-            for (int i = 0; i < CanvasInventory.slotList.Count; i++) {
-                Image image = CanvasInventory.slotList[i].GetComponent<Image>();
+            for (int i = 0; i < inventoryItems.Length; i++) {
+
+                if (inventoryItems[i] != null) {
+                    return inventoryItems[i];
+                }
+            }
+            return null;
+        }
+
+        //同じアイテムをすでにインベントリに持っているかチェックするメソッド
+        private bool HasSameItem(Items items)
+        {
+            for (int i = 0; i < canvasInventory.slotList.Count; i++) {
+                Image image = canvasInventory.slotList[i].GetComponent<Image>();
                 //インベントリ内に同じアイテムがあった場合
-                if (image.sprite == checkItemIcon) {
+                if (image.sprite == items.itemIcon) {
                     return true;
                 }
             }
@@ -136,22 +138,22 @@ namespace TestUI
             return false;
         }
 
-        private void StackItem()
+        private void StackItem(Items items)
         {
-            for (int i = 0; i < inventoryArray.Length; i++) {
+            for (int i = 0; i < inventoryItems.Length; i++) {
                 //インベントリ内に同じアイテムがあった場合
-                if (checkItemTagName == itemArray[i].GetTagName()) {
+                if (items.itemName == inventoryItems[i].itemName) {
                     //参照値を取得
-                    Transform slot = CanvasInventory.slotList[i].transform.GetChild(1);
+                    Transform slot = canvasInventory.slotList[i].transform.GetChild(1);
                     stackText = slot.GetChild(0).GetComponent<TextMeshProUGUI>();
                     //値のセット
-                    Debug.Log("StackItem() : checkStackNum : " + checkStackNum);
+                    Debug.Log("StackItem() : items.itemStackNum : " + items.itemStackNum);
 
-                    currentItemAmount[checkItemID] += checkStackNum; //現在の所持数リストの値を更新
+                    currentItemAmount[items.itemID] += items.itemStackNum; //現在の所持数リストの値を更新
 
-                    Debug.Log("StackItem() : currentItemAmount[checkItemID] : " + currentItemAmount[checkItemID]);
+                    Debug.Log("StackItem() : currentItemAmount[items.itemID] : " + currentItemAmount[items.itemID]);
 
-                    stackText.text = currentItemAmount[checkItemID].ToString(); //UIのテキストを所持数リストの値に更新
+                    stackText.text = currentItemAmount[items.itemID].ToString(); //UIのテキストを所持数リストの値に更新
                     slot.gameObject.SetActive(true); //所持数のUIを表示
                     break;
                 }
@@ -168,31 +170,12 @@ namespace TestUI
 
         }
 
-        private void GetItemData()
-        {
-
-            //拾ったアイテムの情報を、ItemInfoのtag名で取得する
-            for (int i = 0; i < ItemDatabase.itemDatabase.Count; i++) {
-
-                if (checkItemTagName == ItemDatabase.itemDatabase[i].itemName) {
-
-                    checkItemIcon = ItemDatabase.itemDatabase[i].itemIcon;
-                    checkItem = ItemDatabase.itemDatabase[i].itemObject;
-                    checkItemID = ItemDatabase.itemDatabase[i].itemID;
-                    checkStackNum = ItemDatabase.itemDatabase[i].itemStackNum;
-                }
-            }
-
-        }
-
-
-
         //Inventoryの空きがあるかチェックするメソッド
         private void CheckInventoryFull()
         {
-            for (int i = 0; i < inventoryArray.Length; i++) {
+            for (int i = 0; i < inventoryItems.Length; i++) {
 
-                if (inventoryArray[i] == null) {
+                if (inventoryItems[i] == null) {
                     isInventoryFull = false;
                     return;
                 }
@@ -201,46 +184,154 @@ namespace TestUI
         }
 
         //空いているスロットにアイテムのアイコンを入れる + スタック数を表示
-        private void CheckInventorySlot()
+        private void CheckInventorySlot(Items items)
         {
             Image icon;
 
-            for (int i = 0; i < CanvasInventory.slotList.Count; i++) {
+            for (int i = 0; i < canvasInventory.slotList.Count; i++) {
 
-                icon = CanvasInventory.slotList[i].GetComponent<Image>();
-                Transform slot = CanvasInventory.slotList[i].transform.GetChild(1);
+                icon = canvasInventory.slotList[i].GetComponent<Image>();
+                Transform slot = canvasInventory.slotList[i].transform.GetChild(1);
                 stackText = slot.GetChild(0).GetComponent<TextMeshProUGUI>();
 
                 //icon がないスロットを見つけて               
                 if (icon.sprite == null) {
-                    icon.sprite = checkItemIcon; //アイコンを設定
+                    icon.sprite = items.itemIcon; //アイコンを設定
 
                     //アイテムをリストに追加
-                    inventoryArray[i] = checkItem;
-                    itemArray[i] = inventoryArray[i].GetComponent<ItemInfo>();
+                    inventoryItems[i] = items;
+                    Debug.Log(inventoryItems[i]);
 
-                    Debug.Log("CheckInventorySlot() : checkStackNum : " + checkStackNum);
+                    Debug.Log("CheckInventorySlot() : items.itemStackNum : " + items.itemStackNum);
 
-                    currentItemAmount[checkItemID] = checkStackNum; //現在の所持数リストの値を更新
+                    currentItemAmount[items.itemID] = items.itemStackNum; //現在の所持数リストの値を更新
 
-                    Debug.Log("CheckInventorySlot() : currentItemAmount[checkItemID] : " + currentItemAmount[checkItemID]);
+                    Debug.Log("CheckInventorySlot() : currentItemAmount[items.itemID] : " + currentItemAmount[items.itemID]);
 
-                    stackText.text = currentItemAmount[checkItemID].ToString(); //UIのテキストを所持数リストの値に更新
+                    stackText.text = currentItemAmount[items.itemID].ToString(); //UIのテキストを所持数リストの値に更新
                     slot.gameObject.SetActive(true); //所持数のUIを表示
+
+                    Debug.Log("Last" + inventoryItems[i]);
                     break;
                 }
             }
 
         }
 
-        private void InitializeValue()
+        public void ItemUse(GameObject slotObj)
         {
-            checkItem = null;
-            checkItemIcon = null;
-            checkItemTagName = null;
-            checkItemID = 0;
-            checkStackNum = 0;
-            stackText = null;
+            //ボタンが押されたスロットのイメージを所得
+            Image slotIconImage = slotObj.GetComponent<Image>();
+            Sprite icon = slotIconImage.sprite;
+
+            //必要な情報をinventoryItemから取得
+            Items items = GetItemData(icon);
+
+            if (items != null) {
+
+                int index = 0;
+                Transform counts;
+                int amount = currentItemAmount[items.itemID];
+               
+
+                for (int i = 0; i < canvasInventory.slotList.Count; i++) {
+                    
+                    if (slotObj == canvasInventory.slotList[i]) {
+
+                        //例外処理：アイテムが無いスロットに対して使うを押した場合、何もせずに終了
+                        if (inventoryItems[i] == null) {
+                            Debug.Log("no item");
+                            return;
+                        }
+                        //このスロットのindexを取得
+                        index = i;
+                        break;
+                    }
+                }
+                
+                //孫オブジェクトのTextMeshProコンポーネントを取得
+                counts = canvasInventory.slotList[index].transform.GetChild(1);
+                stackText = counts.GetChild(0).GetComponent<TextMeshProUGUI>();
+
+                //アイテムがスロットに残っているとき
+                if (amount > 1) {
+                    currentItemAmount[items.itemID] -= 1;
+                    stackText.text = currentItemAmount[items.itemID].ToString();
+                }
+                //アイテムの残りが最後の１個の時
+                else if (amount == 1) {
+                    currentItemAmount[items.itemID] = 0;  //所持数を0にする
+                    stackText.text = amount.ToString();
+                    counts.gameObject.SetActive(false);
+                    inventoryItems[index] = null;  //inventory配列のindex番目を空にする
+                    slotIconImage.sprite = null;  //slotのiconイメージを削除
+                }
+
+                //アイテムごとの用途に応じて、効果を変更
+                switch (items.itemType.ToString()) {
+
+                case "HEALING":
+                PlayerState.IncreaseHP(items.itemValue);
+                break;
+
+                case "POWERUP":
+                Debug.Log("power up");
+                break;
+
+                case "KEY":
+                EventFlag.SetHasKey(true);
+                //SetHasKey(true);
+                //ShowFlag();
+                Debug.Log("open the door");
+                break;
+
+                default:
+                Debug.Log("default");
+                break;
+                }
+            }
+
+
+
+        }
+
+         private Items GetItemData(Sprite icon)
+        {
+            Items item = null;
+            if (icon == null) {
+                Debug.Log("Not icon. This slot has no Item. ");
+                return null;
+            }
+
+            //拾ったアイテムの情報を、ItemInfoのtag名で取得する
+            for (int i = 0; i < inventoryItems.Length; i++) {
+
+                if (inventoryItems[i].itemIcon == icon) {
+                    item = inventoryItems[i];
+                    break;
+                }
+            }
+            return item;
+            
+        }
+
+        public void ItemDelete(GameObject slotObj)
+        {
+            for (int i = 0; i < canvasInventory.slotList.Count; i++) {
+
+                if (canvasInventory.slotList[i] == slotObj) {
+
+                    Image slotIcon = canvasInventory.slotList[i].GetComponent<Image>();
+
+                    if (slotIcon.sprite != null) {
+                        slotIcon.sprite = null;
+                        inventoryItems[i] = null;
+                        return;
+                    }
+
+                }
+
+            }
         }
 
         public void OnInventory()
