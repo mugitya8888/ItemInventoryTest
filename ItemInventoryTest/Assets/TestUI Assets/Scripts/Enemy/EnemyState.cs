@@ -10,15 +10,16 @@ namespace TestUI
         private int attackPower = 35;
         [SerializeField]
         private int enemyHP = 30;
-        
-        private void OnTriggerEnter(Collider other)
+
+        private void OnCollisionEnter(Collision collision)
         {
-            if (other.gameObject.CompareTag("Player")) {
+            if (collision.gameObject.CompareTag("Player")) {
 
                 PlayerState.DecreaseHP(attackPower);
 
             }
         }
+
 
         public void DecleaseEnemyHP(int damage)
         {
