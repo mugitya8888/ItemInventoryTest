@@ -9,6 +9,11 @@ namespace TestUI
         private static bool hasKey;
         private static bool hasHandgun;
 
+        public static void InitializingEventFlag()
+        {
+            hasKey = false;
+            hasHandgun = false;
+        }
         public static void SetHasKey(bool flag)
         {
             hasKey = flag;

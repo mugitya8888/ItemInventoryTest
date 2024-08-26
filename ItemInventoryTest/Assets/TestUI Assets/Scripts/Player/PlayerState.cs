@@ -11,10 +11,24 @@ namespace TestUI
         private static int HP = 100;
         [SerializeField]
         public Slider hpBar;
+        private static bool isDeath;
+
+        //static void Start()
+        //{
+        //    Debug.Log("PlayerState Start()");
+        //    HP = 100;
+        //    isDeath = false;
+        //}
 
         private void Update()
         {
             hpBar.value = HP;
+        }
+
+        public static void InitializingPlayerState()
+        {
+            HP = 100;
+            isDeath = false;
         }
 
         public static void DecreaseHP(int damage)
@@ -30,6 +44,16 @@ namespace TestUI
         public static int GetHP()
         {
             return HP;
+        }
+
+        public static void SetIsDeath(bool flag)
+        {
+            isDeath = flag;
+        }
+
+        public static bool GetIsDeath()
+        {
+            return isDeath;
         }
     }
 }

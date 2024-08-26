@@ -1870,6 +1870,7 @@ GameObject:
   - component: {fileID: 7228536966679940672}
   - component: {fileID: 9070171901984855083}
   - component: {fileID: 2187069315085370545}
+  - component: {fileID: 85615193972861903}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2147,24 +2148,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickUpComment: {fileID: 0}
   inventoryNotEmptyComent: {fileID: 0}
-  itemDatabase: {fileID: 0}
   inventoryCanvas: {fileID: 0}
   inventoryParent: {fileID: 0}
+  equipmentParent: {fileID: 0}
+  canvasInventory: {fileID: 0}
   _playerInput: {fileID: 4367958501471916734}
-  inventoryArray:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  itemArray:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &2187069315085370545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2178,6 +2166,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpBar: {fileID: 0}
+--- !u!114 &85615193972861903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6964895691044669385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fe636cde46485441933793f6282a9f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameOverUI: {fileID: 7962112146883075422, guid: b6a7f98687b21e743b23e1551bdfbe3f, type: 3}
+  gameEndCanbas: {fileID: 0}
 --- !u!1 &7064348154469243910
 GameObject:
   m_ObjectHideFlags: 0

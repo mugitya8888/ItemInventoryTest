@@ -17,6 +17,10 @@ namespace TestUI
 
                 PlayerState.DecreaseHP(attackPower);
 
+                if (PlayerState.GetHP() <= 0) {
+                    PlayerState.SetIsDeath(true);
+                }
+
             }
         }
 
@@ -27,7 +31,7 @@ namespace TestUI
             Debug.Log("enemyHP : " + enemyHP);
             if (enemyHP <= 0) {
                 Destroy(gameObject);
-            }            
+            }
         }
     }
 }
