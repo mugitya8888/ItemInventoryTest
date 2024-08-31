@@ -21,9 +21,9 @@ namespace TestUI
             if (transform.position.y < high) {
                 transform.Translate(Vector3.up * speed * Time.deltaTime);
             }
-            //else {
-            //    EventFlag.SetPlayedDilde(false);
-            //}
+            else {
+                EventFlag.SetPlayedDilde(false);
+            }
         }
 
     }
