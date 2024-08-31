@@ -60,7 +60,7 @@ namespace TestUI
 
                 pickUpComment.SetActive(true);
 
-                if (Input.GetButtonDown("PickUp")) {
+                if (_playerInput.actions["Interact"].IsPressed()) {
 
                     ItemInfo itemInfo = other.gameObject.GetComponent<ItemInfo>();
 

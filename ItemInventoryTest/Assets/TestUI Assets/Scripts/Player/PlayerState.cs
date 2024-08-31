@@ -7,28 +7,33 @@ namespace TestUI
 {
     public class PlayerState:MonoBehaviour
     {
-        [SerializeField]
         private static int HP = 100;
-        [SerializeField]
-        public Slider hpBar;
+        private static bool isDilde = false;
+        private Slider hpBar;
         private static bool isDeath;
+        public GameEnd gameEnd;
 
-        //static void Start()
-        //{
-        //    Debug.Log("PlayerState Start()");
-        //    HP = 100;
-        //    isDeath = false;
-        //}
+        void Start()
+        {
+            hpBar = transform.GetChild(0).GetComponent<Slider>();
+            InitializingPlayerState();
+        }        
 
         private void Update()
         {
             hpBar.value = HP;
+            if (GetIsDeath()) {
+                //gameOverUI.SetActive(true);
+                gameEnd.SetActiveGameoverUI(true);
+                SetIsDeath(false);
+            }
         }
 
         public static void InitializingPlayerState()
         {
             HP = 100;
             isDeath = false;
+            isDilde = false;
         }
 
         public static void DecreaseHP(int damage)
@@ -54,6 +59,16 @@ namespace TestUI
         public static bool GetIsDeath()
         {
             return isDeath;
+        }
+
+        public static void SetIsDilde(bool flag)
+        {
+            isDilde = flag;
+        }
+
+        public static bool GetIsDilde()
+        {
+            return isDilde;
         }
     }
 }

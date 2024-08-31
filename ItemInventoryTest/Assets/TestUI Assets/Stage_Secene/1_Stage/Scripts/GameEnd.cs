@@ -30,7 +30,17 @@ namespace TestUI
             EventFlag.InitializingEventFlag();
             gameOverUI.SetActive(false);
             SceneManager.LoadScene(1);
-            
+
+        }
+
+        public void SetActiveGameoverUI(bool isActive)
+        {
+            gameOverUI.SetActive(isActive);
+        }
+
+        public void SetActiveGameclearUI(bool isActive)
+        {
+            gameClearUI.SetActive(isActive);
         }
     }
 }
