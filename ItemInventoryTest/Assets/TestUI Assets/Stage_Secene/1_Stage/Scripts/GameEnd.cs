@@ -13,6 +13,7 @@ namespace TestUI
         public void Start()
         {
             PlayerState.InitializingPlayerState();
+            EventFlag.InitializingEventFlag();
             gameOverUI = transform.GetChild(0).gameObject;
             gameClearUI = transform.GetChild(1).gameObject;
         }

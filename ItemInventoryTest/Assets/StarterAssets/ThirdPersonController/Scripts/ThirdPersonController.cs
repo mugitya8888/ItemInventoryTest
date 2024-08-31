@@ -174,6 +174,7 @@ namespace StarterAssets
 
                     _animator.SetBool("CowgirlDild_bool", false);
                     PlayerState.SetIsDilde(false);
+                    EventFlag.SetPlayedDilde(true);
                 }
 
             }
