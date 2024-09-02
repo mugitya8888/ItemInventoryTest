@@ -5,26 +5,21 @@ using UnityEngine;
 namespace TestUI
 {
     public class GimmickDoor:MonoBehaviour
-    {
-        private float high = 3f;
-        private float speed = 1f;
-        private void Update()
+    {    
+        public int ID;
+
+        private void Start()
         {
-            if (EventFlag.GetPlayedDilde()) {
-                DoorOpen();
-
-            }
+            DoorEvents.instance.onGimmickDoorOpen += GimmickDoorOpen;
         }
+        
 
-        private void DoorOpen()
+        private void GimmickDoorOpen(int id)
         {
-            if (transform.position.y < high) {
-                transform.Translate(Vector3.up * speed * Time.deltaTime);
+            if (id == ID) {
+                LeanTween.moveLocalY(gameObject, 4f, 1f).setEaseOutQuad();
             }
-            else {
-                EventFlag.SetPlayedDilde(false);
-            }
-        }
 
+        }
     }
 }

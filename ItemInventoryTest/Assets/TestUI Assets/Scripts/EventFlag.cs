@@ -10,6 +10,11 @@ namespace TestUI
         private static bool hasHandgun;
         private static bool playedDilde;
 
+        private static void Start()
+        {
+            InitializingEventFlag();
+        }
+
         public static void InitializingEventFlag()
         {
             hasKey = false;

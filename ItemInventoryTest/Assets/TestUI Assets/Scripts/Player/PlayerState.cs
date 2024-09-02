@@ -8,20 +8,24 @@ namespace TestUI
     public class PlayerState:MonoBehaviour
     {
         private static int HP = 100;
+        private static int Ecstasy = 0;
         private static bool isDilde = false;
         private Slider hpBar;
+        private Slider ecstasyBar;
         private static bool isDeath;
         public GameEnd gameEnd;
 
         void Start()
         {
             hpBar = transform.GetChild(0).GetComponent<Slider>();
+            ecstasyBar = transform.GetChild(1).GetComponent<Slider>();
             InitializingPlayerState();
-        }        
+        }
 
         private void Update()
         {
             hpBar.value = HP;
+            ecstasyBar.value = Ecstasy;
             if (GetIsDeath()) {
                 //gameOverUI.SetActive(true);
                 gameEnd.SetActiveGameoverUI(true);
@@ -32,6 +36,7 @@ namespace TestUI
         public static void InitializingPlayerState()
         {
             HP = 100;
+            Ecstasy = 0;
             isDeath = false;
             isDilde = false;
         }
@@ -49,6 +54,16 @@ namespace TestUI
         public static int GetHP()
         {
             return HP;
+        }
+
+        public static void DecreaseEcstasy(int coolDown)
+        {
+            Ecstasy -= coolDown;
+        }
+
+        public static void IncreaseEcstasy(int sensitive)
+        {
+            Ecstasy += sensitive;
         }
 
         public static void SetIsDeath(bool flag)
@@ -70,5 +85,6 @@ namespace TestUI
         {
             return isDilde;
         }
+
     }
 }

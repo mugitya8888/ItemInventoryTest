@@ -99,6 +99,8 @@ namespace StarterAssets
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
 
+        private float _dildeCount = 1;
+
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
 #endif
@@ -134,7 +136,7 @@ namespace StarterAssets
 
         private void Start()
         {
-            _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;            
+            _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
             _hasAnimator = TryGetComponent(out _animator);
             //PlayerInventory2の参照値追加
             _playerInventory2 = GetComponent<PlayerInventory2>();
@@ -168,12 +170,17 @@ namespace StarterAssets
 
                 _animator.SetBool("CowgirlDild_bool", true);
                 Vector3 dildePos = _playerInventory2.GetDildePos();
-                transform.position = new Vector3(dildePos.x,transform.position.y,dildePos.z + 0.36f);
+                transform.position = new Vector3(dildePos.x, transform.position.y, dildePos.z + 0.36f);
+
+                if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= _dildeCount) {
+                    PlayerState.IncreaseEcstasy(5);
+                    _dildeCount++;
+                }
 
                 if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 10) {
-
+                    
                     _animator.SetBool("CowgirlDild_bool", false);
-                    PlayerState.SetIsDilde(false);
+                    PlayerState.SetIsDilde(false);                    
                     EventFlag.SetPlayedDilde(true);
                 }
 

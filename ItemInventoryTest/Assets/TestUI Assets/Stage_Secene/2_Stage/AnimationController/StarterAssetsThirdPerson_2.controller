@@ -496,7 +496,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: "R18Anim_sex03(\u9A0E\u4E57\u4F4D\u2640)_02-5"
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1289478963662140102}
@@ -509,7 +509,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: e75b1f628a5d0ad48b6d3da8f4a62c48, type: 2}
+  m_Motion: {fileID: 7400000, guid: e74df48cf937ffb409ef1f60d6ad6a33, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
