@@ -6,14 +6,10 @@ namespace TestUI
 {
     public static class EventFlag
     {
-        private static bool hasKey;
-        private static bool hasHandgun;
-        private static bool playedDilde;
-
-        private static void Start()
-        {
-            InitializingEventFlag();
-        }
+        private static bool hasKey = false;
+        private static bool hasHandgun = false;
+        private static bool playedDilde = false;
+               
 
         public static void InitializingEventFlag()
         {

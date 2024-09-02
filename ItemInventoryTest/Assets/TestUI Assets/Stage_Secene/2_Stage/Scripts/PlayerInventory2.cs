@@ -113,9 +113,8 @@ namespace TestUI
 
 
                 if (_playerInput.actions["Interact"].IsPressed()) {
-
-                    eventUI.ShowHideDildeCowGirlComent(false);
                     PlayerState.SetIsDilde(true);
+                    eventUI.ShowHideDildeCowGirlComent(false);                    
                     SetDildePos(other.transform.position);
 
                 }

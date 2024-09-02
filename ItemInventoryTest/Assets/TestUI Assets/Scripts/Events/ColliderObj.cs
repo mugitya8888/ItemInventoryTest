@@ -16,7 +16,7 @@ namespace TestUI
                 if (EventFlag.GetPlayedDilde() == true) {
 
                     DoorEvents.instance.EventGimmickDoorOpen(doorID);
-                    EventFlag.SetPlayedDilde(false);
+                    
                 }
 
                 

@@ -16,8 +16,10 @@ namespace TestUI
 
         private void GimmickDoorOpen(int id)
         {
+            Debug.Log("GimickDoorOpen()" + id);
             if (id == ID) {
                 LeanTween.moveLocalY(gameObject, 4f, 1f).setEaseOutQuad();
+                EventFlag.SetPlayedDilde(false);
             }
 
         }

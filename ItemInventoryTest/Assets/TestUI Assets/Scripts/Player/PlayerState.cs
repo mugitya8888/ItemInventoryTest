@@ -12,7 +12,7 @@ namespace TestUI
         private static bool isDilde = false;
         private Slider hpBar;
         private Slider ecstasyBar;
-        private static bool isDeath;
+        private static bool isDeath = false;
         public GameEnd gameEnd;
 
         void Start()
