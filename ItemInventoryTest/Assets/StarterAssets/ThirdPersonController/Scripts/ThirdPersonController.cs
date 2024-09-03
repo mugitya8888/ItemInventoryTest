@@ -1,4 +1,5 @@
 ﻿using TestUI;
+using Unity.VisualScripting;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
@@ -100,8 +101,9 @@ namespace StarterAssets
         private int _animIDMotionSpeed;
 
         //追加の変数
-        private float _dildeCount = 1;
-        private float _currentCount = 0;
+        private int _dildeCount = 1;
+        private int _currentCount = 0;
+        [SerializeField]private int num;
 
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
@@ -173,7 +175,7 @@ namespace StarterAssets
 
                 _animator.SetBool("CowgirlDild_bool", true);
                 Vector3 dildePos = _playerInventory2.GetDildePos();
-                transform.position = new Vector3(dildePos.x, transform.position.y, dildePos.z + 0.36f);
+                transform.position = new Vector3(dildePos.x, transform.position.y, dildePos.z + 0.36f);                
 
                 if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= _dildeCount) {
                     PlayerState.IncreaseEcstasy(5);
@@ -181,8 +183,10 @@ namespace StarterAssets
                 }
                 
                 if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > _currentCount + 10) {
-                    _currentCount = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                    _currentCount = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime.ConvertTo<int>();
                     _dildeCount = _currentCount + 1;
+                    Debug.Log("_currentCount : "+_currentCount + " / " + "_dildeCount : "+_dildeCount);
+                    
                     _animator.SetBool("CowgirlDild_bool", false);
 
                     PlayerState.SetIsDilde(false);

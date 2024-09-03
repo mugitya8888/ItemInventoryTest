@@ -8,10 +8,8 @@ namespace TestUI
     {
         public int doorID;
         private void OnTriggerEnter(Collider other)
-        {
-            Debug.Log(other.gameObject);
-            if (other.gameObject.CompareTag("Player")) {
-                Debug.Log("enter");
+        {            
+            if (other.gameObject.CompareTag("Player")) {                
 
                 if (EventFlag.GetPlayedDilde() == true) {
 

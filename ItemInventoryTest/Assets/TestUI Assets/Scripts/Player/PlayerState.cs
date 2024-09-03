@@ -26,11 +26,22 @@ namespace TestUI
         {
             hpBar.value = HP;
             ecstasyBar.value = Ecstasy;
+            EcstasyGageMethod();
             if (GetIsDeath()) {
                 //gameOverUI.SetActive(true);
                 gameEnd.SetActiveGameoverUI(true);
                 SetIsDeath(false);
             }
+        }
+
+        private void EcstasyGageMethod()
+        {
+            if (ecstasyBar.value == 100) {
+                HP -= 10;
+                Ecstasy = 0;                
+            }
+            
+            
         }
 
         public static void InitializingPlayerState()
